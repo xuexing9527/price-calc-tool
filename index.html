@@ -1,0 +1,126 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>价格成本利润计算工具</title>
+</head>
+<style>
+    .container {
+        width: 50%;
+        min-width: 500px;
+        margin: 0 auto;
+
+        background-color: #efefef;
+        border-radius: 16px;
+        padding: 16px;
+    }
+
+    .container input {
+        outline: none;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+
+    }
+
+    .container .btn-box {
+        margin-top: 16px;
+    }
+
+    .container .calc-result {
+        background-color: #fff;
+        border-radius: 16px;
+        padding: 16px;
+
+        margin-top: 20px;
+    }
+</style>
+
+<body>
+    <h1 style="text-align: center;">价格利润销量计算辅助工具</h1>
+    <div class="container">
+        <div>
+            售卖价格：<input type="number" onkeyup="calc()" onchange="calc()" id="price">
+        </div>
+        <div>
+            成本价格：<input type="number" onkeyup="calc()" onchange="calc()" id="cost">
+        </div>
+        <div>
+            预计销量：<input type="number" onkeyup="calc()" onchange="calc()" id="count">
+        </div>
+
+        <div class="btn-box">
+            <button onclick="calc()">计算</button>
+        </div>
+
+        <div class="calc-result">
+            <div id="profit">利润: </div>
+            <div id="profitMargin">利润率: </div>
+            <div id="markupPercentage">加价率: </div>
+
+            <div id="countTotalCost">总成本: </div>
+            <div id="countTotalIncome">总收入: </div>
+            <div id="countTotalProfit">总利润: </div>
+        </div>
+    </div>
+
+</body>
+<script>
+    const ID = {
+        // 价格
+        PRICE: 'price',
+        // 成本
+        COST: 'cost',
+        // 销售量
+        COUNT: 'count',
+
+        // 利润
+        PROFIT: 'profit',
+        // 利润率
+        PROFIT_MARGIN: 'profitMargin',
+        // 加价率
+        MARKUP_PERCENTAGE: 'markupPercentage',
+
+        // 总成本
+        COUNT_TOTAL_COST: 'countTotalCost',
+        // 总收入
+        COUNT_TOTAL_INCOME: 'countTotalIncome',
+        // 总利润
+        COUNT_TOTAL_PROFIT: 'countTotalProfit'
+    }
+
+    const getInputValueById = (id) => {
+        return document.getElementById(id).value
+    }
+
+    const setValue = (id, str) => {
+        document.getElementById(id).innerHTML = str
+    }
+
+
+    const calc = () => {
+        const price = getInputValueById(ID.PRICE)
+        const cost = getInputValueById(ID.COST)
+        const count = getInputValueById(ID.COUNT)
+        const profit = price - cost
+        // 利润率 以售价为基准，常见于零售和服务行业，顾客花的钱里多少是赚的（常规销售）
+        const profitMargin = profit / price * 100
+        // 加价率 已成本为基准，常见于生产和批发环节，关注投入和产出比。投入了 100 块，利润是这 100 的百分之几（批发）
+        const markupPercentage = profit / cost * 100
+
+        // 关于 count
+        const totalCost = count * cost
+        const countTotalIncome = count * price
+        const totalProfit = profit * count
+
+        setValue(ID.PROFIT, `利润为：${profit}`)
+        setValue(ID.PROFIT_MARGIN, `利润率为：${profitMargin}%`)
+        setValue(ID.MARKUP_PERCENTAGE, `加价率为：${markupPercentage}%`)
+        setValue(ID.COUNT_TOTAL_COST, `总成本：${totalCost}`)
+        setValue(ID.COUNT_TOTAL_INCOME, `总收入：${countTotalIncome}`)
+        setValue(ID.COUNT_TOTAL_PROFIT, `总利润：${totalProfit}`)
+    }
+
+</script>
+
+</html>
